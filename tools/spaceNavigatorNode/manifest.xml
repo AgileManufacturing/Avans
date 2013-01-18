@@ -1,0 +1,17 @@
+<package>
+  <description brief="spaceNavigatorNode">
+
+     spaceNavigatorNode
+
+  </description>
+  <author>Eric Smekens en Thomas Cornelissen</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/keyboardControlNode</url>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="deltaRobotNode"/>
+
+</package>
+
+

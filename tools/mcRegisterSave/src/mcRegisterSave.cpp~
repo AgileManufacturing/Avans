@@ -1,0 +1,90 @@
+#include <iostream>
+#include <stdint.h>
+
+#include <Motor/CRD514KD.h>
+#include <ModbusController/ModbusController.h>
+
+/**
+ * Print values of registers in the given range (inclusive range. Max address is also dumped!)
+ *
+ * uint16_t motorID		ID of the motor to be printed. 0 = broadcast, 1 = MOTOR_1, 2 = MOTOR_2, 3 = MOTOR_3
+ * uint32_t minAddress	Start address of the registers
+ * uint32_t maxAddress	Last address of the registers
+ */
+void printRegisterValues(ModbusController::ModbusController* modbus, uint16_t motorID, uint32_t minAddress, uint32_t maxAddress){
+	if(modbus == NULL){
+		std::cerr << "No modbus connection!" << std::endl;
+		return;
+	}
+
+	for(uint32_t address = minAddress; address <= maxAddress; ++address){
+		std::cout << std::hex << address << " " << std::dec << modbus->readU16(motorID, address) << std::endl;
+	}
+}
+
+/**
+ * Download values of registers in the given range (inclusive range. Max address is also dumped!)
+ *
+ * uint16_t motorID		ID of the motor to be printed. 0 = broadcast, 1 = MOTOR_1, 2 = MOTOR_2, 3 = MOTOR_3
+ * uint32_t minAddress	Start address of the registers
+ * uint32_t maxAddress	Last address of the registers
+ */
+void writeRegisterValues(ModbusController::ModbusController* modbus){
+	if(modbus == NULL){
+		std::cerr << "No modbus connection!" << std::endl;
+		return;
+	}
+
+	ifstream iFile("registers.dump");	// input.txt has integers, one per line
+
+	int line = 0;
+	while (!iFile.eof())
+	{
+		if(line < 2)
+		{
+			std::cout << "Skip line" << std::endl;
+		}
+		else
+		{
+			int x;
+			iFile >> x;
+			cerr << x << endl;
+		}
+	}
+
+	return 0;
+
+//	for(uint32_t address = minAddress; address <= maxAddress; ++address){
+//		std::cout << std::hex << address << " " << std::dec << modbus->readU16(motorID, address) << std::endl;
+	//}
+}
+int main() {
+	std::cout << "Addr Value" << std::endl;
+
+	ModbusController::ModbusController* modbus = new ModbusController::ModbusController(modbus_new_rtu(
+        "/dev/ttySNX0",
+        Motor::CRD514KD::RtuConfig::BAUDRATE,
+        Motor::CRD514KD::RtuConfig::PARITY,
+        Motor::CRD514KD::RtuConfig::DATA_BITS,
+        Motor::CRD514KD::RtuConfig::STOP_BITS));
+
+	//std::cout << "Write" << std::endl;
+	//modbus->writeU16(1, 0x200, 0x0, false);
+
+	std::cout << "Motor 1" << std::endl;
+	printRegisterValues(modbus, 1, 0x200, 0x25C);
+	printRegisterValues(modbus, 1, 0x30E, 0x31C);
+
+	//std::cout << "Motor 2" << std::endl;
+	//printRegisterValues(modbus, 2, 0x200, 0x25C);
+	//printRegisterValues(modbus, 2, 0x30E, 0x31C);
+
+	//std::cout << "Motor 3" << std::endl;
+	//printRegisterValues(modbus, 3, 0x200, 0x25C);
+	//printRegisterValues(modbus, 3, 0x30E, 0x31C);
+
+
+	delete modbus;
+
+	return 0;
+}

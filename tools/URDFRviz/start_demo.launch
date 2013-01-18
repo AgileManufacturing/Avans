@@ -1,0 +1,5 @@
+<launch>
+        <param name="robot_description" command="cat $(find deltaRobotNode)/model.xml" />
+        <node name="robot_deltaRobotNode" pkg="robot_deltaRobotNode" type="deltaRobotNode" />
+        <node name="deltaRobotNode" pkg="deltaRobotNode" type="deltaRobotNode" />
+</launch>

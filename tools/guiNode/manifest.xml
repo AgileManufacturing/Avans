@@ -1,0 +1,28 @@
+<package>
+  <description brief="guiNode">
+
+     guiNode
+
+  </description>
+  <author>Eric en Thomas - Avans</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/guiNode</url>
+
+
+  <rosdep name="qt4"/>
+
+  <!-- rosbuild1 -->
+  <depend package="qt_build"/>
+  <depend package="roscpp"/>
+  
+  <rosbuild2>
+    <depend package="qt_build"/>
+    <depend package="roscpp"/>
+  </rosbuild2>
+
+  <depend package="std_msgs"/>
+  <depend package="deltaRobotNode"/>
+  <depend package="rosgraph_msgs" />
+
+</package>
